@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class Asteroid : MonoBehaviour, IPullObject
 {
+    [SerializeField] private float fragmentsLifetime;
     [SerializeField] private float angularSpeed;
     private MeshCombiner meshCombiner;
     private Rigidbody rb;
@@ -43,8 +44,25 @@ public class Asteroid : MonoBehaviour, IPullObject
 
     void Start()
     {
-        SaveStartTransforms();
+        SetUpAsteroidFragments();
         InitializeRandomRotation();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space))
+            ReCreate();
+    }
+
+    private void SetUpAsteroidFragments()
+    {
+        foreach (AsteroidFragment fragment in fragments)
+        {
+            fragment.DestroyTime = fragmentsLifetime;
+            fragment.ScalingFactor = transform.localScale.x;
+        }
+
+        SaveStartTransforms();
     }
 
     private void SaveStartTransforms()
@@ -68,7 +86,7 @@ public class Asteroid : MonoBehaviour, IPullObject
     {
         IsActive = false;
         col.isTrigger = true;
-        //rb.detectCollisions = false;
+        rb.detectCollisions = false;
 
         foreach (AsteroidFragment fragment in fragments)
         {
@@ -80,6 +98,7 @@ public class Asteroid : MonoBehaviour, IPullObject
     public void ReCreate()
     {
         gameObject.SetActive(true);
+        IsActive = true;
         col.isTrigger = false;
         col.enabled = false;
         rb.angularVelocity = Vector3.zero;
@@ -96,7 +115,6 @@ public class Asteroid : MonoBehaviour, IPullObject
             fragments[i].transform.localRotation = Quaternion.identity;
         }
 
-        //rb.detectCollisions = true;
         col.enabled = true;
         InitializeRandomRotation();
     }

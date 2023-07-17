@@ -8,14 +8,17 @@ public class SpawnSystem : MonoBehaviour
 {
     [Space(5)]
     [Header("System settings")]
+    [SerializeField] int spawnedScrapCount;
     [SerializeField] int spawnedAsteroidsCount;
-    [SerializeField] float checkPointRadius;
+    [SerializeField] float asteroidcheckRadius;
+    [SerializeField] float scrapCheckRadius;
     [SerializeField] Vector2 spawnRange;
 
     [Space(5)]
     [Header("Spawner settings")]
     [SerializeField] Vector2 spawnersSpawnRange;
-    [SerializeField] GameObject asteroidPrefab;
+    [SerializeField] GameObject scrapPrefab;
+    [SerializeField] GameObject[] asteroidPrefabs;
     [SerializeField] private Spawner[] spawners;
 
     [Space(5)]
@@ -23,6 +26,7 @@ public class SpawnSystem : MonoBehaviour
     [SerializeField] private Vector3 destroyerSize;
     [SerializeField] private Destroyer[] destroyers;
 
+    private int maxSpawnCallBacks;
     private (Destroyer destroyer, Spawner spawner)[] spawnDirections;
     private List<IPullObject> objects = new List<IPullObject>();
 
@@ -32,6 +36,8 @@ public class SpawnSystem : MonoBehaviour
         CreateSpawnDirections();
         SetUpSpawners();
         SetUpDestroyers();
+
+        maxSpawnCallBacks = (spawnedScrapCount + spawnedAsteroidsCount) / spawners.Length;
     }
 
     void Start()
@@ -66,8 +72,8 @@ public class SpawnSystem : MonoBehaviour
     {
         foreach (Spawner spawner in spawners)
         {
-            spawner.CheckPointRadius = checkPointRadius;
-            spawner.SpawnRange = spawnersSpawnRange;
+            spawner.AsteroidSpawnRange = spawnersSpawnRange;
+            spawner.SpawnSystem = this;
         }
     }
 
@@ -95,32 +101,55 @@ public class SpawnSystem : MonoBehaviour
         Vector3 spawnPoint;
         for (int i = 0; i < spawnedAsteroidsCount; i++)
         {
-            spawnPoint = GetSpawnPoint(spawnRange, transform);
+            GameObject prefab = asteroidPrefabs[Random.Range(0, asteroidPrefabs.Length)];
+            bool isInitializationPoissible = GetSpawnPoint(asteroidcheckRadius, spawnRange, transform, out spawnPoint);
 
-            IPullObject newObject = Instantiate(asteroidPrefab, spawnPoint, Quaternion.identity).GetComponent<IPullObject>();
-            objects.Add(newObject);
+            if (isInitializationPoissible)
+            {
+                IPullObject newObject = Instantiate(prefab, spawnPoint, Quaternion.identity).GetComponent<IPullObject>();
+                objects.Add(newObject);
+            }
+        }
+
+        for (int i = 0; i < spawnedScrapCount; i++)
+        {
+
+            bool isInitializationPoissible = GetSpawnPoint(scrapCheckRadius, spawnRange, transform, out spawnPoint);
+
+            if (isInitializationPoissible)
+            {
+                IPullObject newObject = Instantiate(scrapPrefab, spawnPoint, Quaternion.identity).GetComponent<IPullObject>();
+                objects.Add(newObject);
+            }
         }
     }
 
-    public Vector3 GetSpawnPoint(Vector2 spawnRange, Transform spawnTransfrom)
+    public bool GetSpawnPoint(float checkpointRadius, Vector2 spawnRange, Transform spawnTransfrom, out Vector3 spawnPoint)
     {
         bool isPointFounded = false;
-        Vector3 spawnPoint = Vector3.zero;
+        spawnPoint = Vector3.zero;
 
-        while (!isPointFounded)
+        int emptySpawnCallback = 0;
+
+        while (emptySpawnCallback < maxSpawnCallBacks)
         {
             spawnPoint = new Vector3(Random.Range(-spawnRange.x, spawnRange.x) + spawnTransfrom.position.x, spawnTransfrom.position.y, Random.Range(-spawnRange.y, spawnRange.y) + spawnTransfrom.position.z);
 
-            //if (!Physics.CheckSphere(spawnPoint, checkPointRadius, -5, QueryTriggerInteraction.Ignore))
-            //    isPointFounded = true;
-            if (CheckSpawnPoint(spawnPoint))
+            if (CheckSpawnPoint(checkpointRadius, spawnPoint))
+            {
                 isPointFounded = true;
+                break;
+            }
+            else
+            {
+                emptySpawnCallback++;
+            }
         }
 
-        return spawnPoint;
+        return isPointFounded;
     }
 
-    private bool CheckSpawnPoint(Vector3 spawnPoint)
+    private bool CheckSpawnPoint(float checkpointRadius, Vector3 spawnPoint)
     {
         bool isCorrectSpawnPoint = true;
 
@@ -131,11 +160,11 @@ public class SpawnSystem : MonoBehaviour
 
             float distance = (spawnPoint - newObject.GameObject.transform.position).magnitude;
 
-            if (distance <= checkPointRadius)
+            if (distance <= checkpointRadius)
                 isCorrectSpawnPoint = false;
         }
 
         return isCorrectSpawnPoint;
     }
-
 }
+

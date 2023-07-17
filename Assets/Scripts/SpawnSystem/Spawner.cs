@@ -4,15 +4,15 @@ using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-
-    private float checkPointRadius;
-    private Vector2 spawnRange;
+    private float asteroidCheckRadius;
+    private float scrapCheckRadius;
+    private Vector2 scrapSpawnRange;
+    private Vector2 asteroidSpawnRange;
     private List<IPullObject> forSpawnQueue = new List<IPullObject>();
     private SpawnSystem spawnSystem;
 
-
-    public float CheckPointRadius { set => checkPointRadius = value; }
-    public Vector2 SpawnRange { set => spawnRange = value; }
+    public Vector2 ScrapSpawnRange { get => scrapSpawnRange; set => scrapSpawnRange = value; }
+    public Vector2 AsteroidSpawnRange { set => asteroidSpawnRange = value; }
     public SpawnSystem SpawnSystem { set => spawnSystem = value; }
 
     private void Update()
@@ -20,32 +20,28 @@ public class Spawner : MonoBehaviour
         Spawn();
     }
 
-    //private Vector3 CalculateSpawnPoint()
-    //{
-    //    bool isPointFounded = false;
-    //    Vector3 spawnPoint = Vector3.zero;
-
-    //    while (!isPointFounded)
-    //    {
-    //        spawnPoint = new Vector3(Random.Range(-spawnRange.x, spawnRange.x) + transform.position.x, transform.position.y, Random.Range(-spawnRange.y, spawnRange.y) + transform.position.z);
-
-    //        if (!Physics.CheckSphere(spawnPoint, checkPointRadius, -5, QueryTriggerInteraction.Ignore))
-    //            isPointFounded = true;
-    //    }
-
-    //    return spawnPoint;
-    //}
-
     private void Spawn()
     {
+        float checkRadius = 1;
+        Vector3 spawnPosition = Vector3.zero;
         for (int i = 0; i < forSpawnQueue.Count; i++)
         {
             IPullObject obj = forSpawnQueue[i];
-            Vector3 spawnPosition = spawnSystem.GetSpawnPoint(spawnRange, transform);
 
-            obj.GameObject.transform.position = spawnPosition;
-            obj.ReCreate();
-            forSpawnQueue.Remove(obj);
+            if (obj.GetType() == typeof(Asteroid))
+                checkRadius = asteroidCheckRadius;
+
+            if (obj.GetType() == typeof(Scrap))
+                checkRadius = scrapCheckRadius;
+
+            bool isInitializationPoissible = spawnSystem.GetSpawnPoint(checkRadius, asteroidSpawnRange, transform, out spawnPosition);
+
+            if (isInitializationPoissible)
+            {
+                obj.GameObject.transform.position = spawnPosition;
+                obj.ReCreate();
+                forSpawnQueue.Remove(obj);
+            }
         }
     }
 

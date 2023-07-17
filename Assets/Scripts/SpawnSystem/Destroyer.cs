@@ -14,6 +14,12 @@ public class Destroyer : MonoBehaviour
 
             forDestroyQueue.Add(pullObject);
         }
+
+        //if (other.GetComponent<IDestroyable>() != null)
+        //{
+        //    IDestroyable objectForDestroy = other.GetComponent<IDestroyable>();
+        //    objectForDestroy.Destroy();
+        //}
     }
 
     public IPullObject[] GetDestroyedObjects()

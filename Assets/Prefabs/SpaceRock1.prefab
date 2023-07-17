@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1331451574356725549}
   - component: {fileID: 4798743026442148533}
   m_Layer: 0
-  m_Name: spacerok
+  m_Name: SpaceRock1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ Transform:
   - {fileID: 8830348231965577333}
   - {fileID: 2393076701965476983}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &22819356264221565
 Rigidbody:
@@ -81,6 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee2ba011cb3f5e4492b18b088c425f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fragmentsLifetime: 5
   angularSpeed: 10
 --- !u!64 &4798743026442148533
 MeshCollider:
@@ -202,7 +203,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &5811338664386314942
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -350,7 +350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &1028329229951864729
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -498,7 +497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &3420434918553850937
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -646,7 +644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &9057592198605697781
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -794,7 +791,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &2323651275992938431
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -942,7 +938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &3393393403636249627
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1090,7 +1085,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &2469606522202984199
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1238,7 +1232,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57e1e1e73294b847a0da0d81fb3a1d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
 --- !u!54 &7672024693416992361
 Rigidbody:
   m_ObjectHideFlags: 0

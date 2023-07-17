@@ -13,6 +13,7 @@ public class SpawnSystem : MonoBehaviour
     [SerializeField] float asteroidcheckRadius;
     [SerializeField] float scrapCheckRadius;
     [SerializeField] Vector2 spawnRange;
+    [SerializeField] Player player;
 
     [Space(5)]
     [Header("Spawner settings")]
@@ -99,6 +100,9 @@ public class SpawnSystem : MonoBehaviour
     private void InitializeObjects()
     {
         Vector3 spawnPoint;
+
+        objects.Add(player);
+
         for (int i = 0; i < spawnedAsteroidsCount; i++)
         {
             GameObject prefab = asteroidPrefabs[Random.Range(0, asteroidPrefabs.Length)];

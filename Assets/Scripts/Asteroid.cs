@@ -16,16 +16,9 @@ public class Asteroid : MonoBehaviour, IPullObject
     public bool IsActive { get; set; }
     public GameObject GameObject => gameObject;
 
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.GetComponent<PlayerMovement>())
-            Debug.Log("Player outside trigger");
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.GetComponent<PlayerMovement>())
+        if (!collision.gameObject.GetComponent<Player>())
             return;
 
         Collapse();

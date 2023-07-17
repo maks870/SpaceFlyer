@@ -87,6 +87,7 @@ public class AsteroidFragment : MonoBehaviour, IDestroyable
     {
         gameObject.SetActive(false);
         IsDecreasing = false;
+        rb.isKinematic = true;
         transform.localScale = new Vector3(1, 1, 1);
     }
 }
